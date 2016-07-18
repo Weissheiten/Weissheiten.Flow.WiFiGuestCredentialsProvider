@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="28fc675f-6242-49ca-910d-ef38877cbe8a" name="Flow Dev" url="http://localhost">
+        <fileTransfer host="localhost" port="1122" privateKey="$USER_HOME$/.ssh/fwweissheiten" accessType="SFTP" passphrase="dfefdfcddfcbdfcbdfecdfcfdfcddfcfdfebdfdfdfcedfc3dfd9dfccdfd7" username="www" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="1122" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

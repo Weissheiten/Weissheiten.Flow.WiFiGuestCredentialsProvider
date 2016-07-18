@@ -1,0 +1,88 @@
+<?php
+namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model;
+
+/*
+ * This file is part of the Weissheiten.Flow.WiFiGuestCredentialsProvider package.
+ */
+
+use TYPO3\Flow\Annotations as Flow;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @Flow\Entity
+ */
+class WiFiVoucher
+{
+
+    /**
+     * @var string
+     * @Flow\Validate(type="NotEmpty")
+     * @Flow\Validate(type="StringLength", options={ "minimum"=3, "maximum"=80 })
+     */
+    protected $username;
+
+    /**
+     * @var string
+     * @Flow\Validate(type="NotEmpty")
+     * @Flow\Validate(type="StringLength", options={ "minimum"=7, "maximum"=7 })
+     */
+    protected $password;
+
+    /**
+     * @var integer
+     */
+    protected $validitymin;
+
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     * @return void
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return void
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getValiditymin()
+    {
+        return $this->validitymin;
+    }
+
+    /**
+     * @param integer $validitymin
+     * @return void
+     */
+    public function setValiditymin($validitymin)
+    {
+        $this->validitymin = $validitymin;
+    }
+
+}

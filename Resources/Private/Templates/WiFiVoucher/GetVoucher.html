@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+
+<f:layout name="Default" />
+
+<f:section name="Title">Your Voucher</f:section>
+
+<f:section name="Content">
+    <f:if condition="{value.status}==1">
+        <f:then>
+            <p>Username: {value.voucher.username}</p>
+            <p>Password: {value.voucher.password}</p>
+            <p>Validity: {value.voucher.validitymin} mins</p>
+        </f:then>
+        <f:else>
+            Error while fetching Voucher - please check Outlet ID and SecurityHash.
+        </f:else>
+    </f:if>
+
+</f:section>
