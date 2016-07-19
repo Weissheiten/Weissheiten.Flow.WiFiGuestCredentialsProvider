@@ -27,7 +27,7 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     protected $supportedMediaTypes = array('application/json', 'text/html');
 
-    protected $outlets = array('1010', '1020');
+    protected $outlets;
 
     /**
      * @Flow\Inject     *
@@ -35,23 +35,54 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     protected $WiFiVoucherRepository;
 
+
+    /**
+     * Initializes the controller before invoking an action method.
+     *
+     * Override this method to solve tasks which all actions have in
+     * common.
+     *
+     * @return void
+     * @api
+     */
+    protected function initializeAction()
+    {
+        $this->outlets = array(
+            // calculated hash for demo password: $2y$10$XXG2015cn2lzS6r7o8BmLuBpnBjjQUDpSlNBQuymnli5x3.b1aD/K
+            array('outletcode' => '1010', 'outletpassword' => 'exchangeThisPW'),
+            array('outletcode' => '1070', 'outletpassword' => 'exchangeThisPW')
+        );
+    }
+
     /**
      * @param string $outletTag
-     * @param string $sharedSecurityHash
+     * @param string $securityHash
      * @return void
      */
-    public function getVoucherAction($outletTag, $sharedSecurityHash)
+    public function getVoucherAction($outletTag, $securityHash)
     {
-        if (!in_array($outletTag, $this->outlets) || $sharedSecurityHash!=="rubberDuckOfDoom!") {
-            $this->view->assign(
-                'value',
-                array('status' => 0, 'voucher' => 'Error while getting voucher')
-            );
-        } else {
+        $found_outlet = null;
+
+        foreach ($this->outlets as $key => $outlet) {
+            if ($outlet['outletcode']===$outletTag) {
+                $found_outlet = $outlet;
+                break;
+            }
+        }
+
+        if ($found_outlet!==null && password_verify($found_outlet['outletpassword'], $securityHash)) {
             $voucher = $this->WiFiVoucherRepository->findFirst();
             $this->view->assign(
                 'value',
-                array('status' => 1, 'voucher' => $voucher)
+                array(
+                    'status' => 1,
+                    'voucher' => $voucher
+                )
+            );
+        } else {
+            $this->view->assign(
+                'value',
+                array('status' => 0, 'voucher' => 'Error while getting voucher')
             );
         }
     }
