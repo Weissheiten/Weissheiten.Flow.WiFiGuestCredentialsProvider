@@ -1,0 +1,9 @@
+-
+  name: 'Request code'
+  uriPattern: '<prefix>/getcredentials(.{@format})'
+  defaults:
+    '@package': 'Weissheiten.Flow.WiFiGuestCredentialsProvider'
+    '@controller': 'WiFiVoucher'
+    '@action': 'getVoucher'
+    '@format': 'html'
+  appendExceedingArguments: true

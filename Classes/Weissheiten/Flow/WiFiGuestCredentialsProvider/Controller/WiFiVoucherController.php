@@ -49,7 +49,7 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
     {
         $this->outlets = array(
             // calculated hash for demo password: $2y$10$XXG2015cn2lzS6r7o8BmLuBpnBjjQUDpSlNBQuymnli5x3.b1aD/K
-            array('outletcode' => '1010', 'outletpassword' => 'exchangeThisPW'),
+            array('outletcode' => '1010', 'outletpassword' => 'salzpfeffer434'),
             array('outletcode' => '1070', 'outletpassword' => 'exchangeThisPW')
         );
     }

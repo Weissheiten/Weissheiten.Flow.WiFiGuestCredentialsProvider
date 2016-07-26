@@ -1,0 +1,7 @@
+TYPO3:
+  Flow:
+    mvc:
+      routes:
+        'Weissheiten.Flow.WiFiGuestCredentialsProvider':
+          variables:
+            'prefix': 'wifivoucher'
