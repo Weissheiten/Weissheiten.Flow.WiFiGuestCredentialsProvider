@@ -33,6 +33,17 @@ class WiFiVoucher
      */
     protected $validitymin;
 
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $requesttime;
+
+    /**
+     * @ORM\ManyToOne(inversedBy="vouchers")
+     * @var Outlet
+     */
+    protected $outlet;
 
     /**
      * @return string
@@ -85,4 +96,36 @@ class WiFiVoucher
         $this->validitymin = $validitymin;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getRequesttime()
+    {
+        return $this->requesttime;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return void
+     */
+    public function setRequesttime(\DateTime $date)
+    {
+        $this->requesttime = $date;
+    }
+
+    /**
+     * @return \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet
+     */
+    public function getOutlet()
+    {
+        return $this->outlet;
+    }
+
+    /**
+     * @param \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet $outlet
+     */
+    public function setOutlet($outlet)
+    {
+        $this->outlet = $outlet;
+    }
 }

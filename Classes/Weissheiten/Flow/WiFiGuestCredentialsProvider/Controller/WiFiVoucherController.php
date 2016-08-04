@@ -7,6 +7,8 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Persistence\Repository;
+use TYPO3\Flow\Persistence\Generic\PersistenceManager;
+
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\WiFiVoucherRepository;
 
