@@ -7,7 +7,6 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
