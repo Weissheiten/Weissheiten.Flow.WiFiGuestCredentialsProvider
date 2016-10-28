@@ -10,6 +10,7 @@ use TYPO3\Flow\Persistence\Repository;
 use TYPO3\Flow\Persistence\Generic\PersistenceManager;
 
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher;
+use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\OutletRepository;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\WiFiVoucherRepository;
 
 class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
@@ -29,14 +30,17 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     protected $supportedMediaTypes = array('application/json', 'text/html');
 
-    protected $outlets;
+    /**
+     * @Flow\Inject
+     * @var OutletRepository
+     */
+    protected $OutletRepository;
 
     /**
-     * @Flow\Inject     *
+     * @Flow\Inject
      * @var WiFiVoucherRepository
      */
     protected $WiFiVoucherRepository;
-
 
     /**
      * Initializes the controller before invoking an action method.
@@ -58,21 +62,17 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
 
     /**
      * @param string $outletTag
-     * @param string $securityHash
+     * @param string $password
      * @return void
      */
-    public function getVoucherAction($outletTag, $securityHash)
+    public function getVoucherAction($outletTag, $password)
     {
+        /* @var \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet $found_outlet */
         $found_outlet = null;
 
-        foreach ($this->outlets as $key => $outlet) {
-            if ($outlet['outletcode']===$outletTag) {
-                $found_outlet = $outlet;
-                break;
-            }
-        }
+        $found_outlet = $this->OutletRepository->findFirst();
 
-        if ($found_outlet!==null && password_verify($found_outlet['outletpassword'], $securityHash)) {
+        if ($found_outlet!==null && password_verify($password, $found_outlet->getPwhash())) {
             $voucher = $this->WiFiVoucherRepository->findFirst();
             $this->view->assign(
                 'value',

@@ -36,6 +36,12 @@ class Outlet
     protected $vouchers;
 
     /**
+     * @var string
+     * @Flow\Validate(type="NotEmpty")
+     */
+    protected $pwhash;
+
+    /**
      * @return string
      */
     public function getName()
@@ -53,7 +59,6 @@ class Outlet
     }
 
     /**
-     * @param int $zipcode
      * @return int
      */
     public function getZipcode()
@@ -68,6 +73,22 @@ class Outlet
     public function setZipcode($zipcode)
     {
         $this->zipcode = $zipcode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPwhash()
+    {
+        return $this->pwhash;
+    }
+
+    /**
+     * @param string $pwhash
+     */
+    public function setPwhash($pwhash)
+    {
+        $this->pwhash = $pwhash;
     }
 
     /**

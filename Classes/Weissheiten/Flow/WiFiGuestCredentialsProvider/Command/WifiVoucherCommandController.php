@@ -85,13 +85,15 @@ OUT;
      *
      * @param string $name - this argument is required
      * @param int $zipcode - this argument is required
+     * @param string $pwhash - this argument is required
      * @return void
      */
-    public function insertOutletCommand($name, $zipcode)
+    public function insertOutletCommand($name, $zipcode, $pwhash)
     {
         $outlet = new Outlet();
         $outlet->setName($name);
         $outlet->setZipcode($zipcode);
+        $outlet->setPwhash(password_hash($pwhash,CRYPT_BLOWFISH));
 
         $this->outletRepository->add($outlet);
 
