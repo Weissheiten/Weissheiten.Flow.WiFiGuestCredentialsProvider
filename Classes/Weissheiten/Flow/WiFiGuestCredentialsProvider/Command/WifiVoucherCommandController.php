@@ -200,4 +200,27 @@ OUT;
             array($outletCount, $voucherCount)
         );
     }
+
+    /**
+     * @param string $path Sourcefile
+     */
+    public function importVoucherListFromCSVCommand($path){
+        // read csv
+        $row = 1;
+        if (($handle = fopen($path, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, ",")) !== FALSE) {
+                // the CSV coming from Sputnik always has the format: Username, Password, Type, Minutes, Megabytes limit, 10
+                // only 3 of the first 4 fields are needed
+                if(preg_match('/^(\w|\d)+$/',$data[0]) && !is_numeric($data[1] && !is_numeric($data[3]))){
+                    $num = count($data);
+                    echo "<p> $num Felder in Zeile $row: <br /></p>\n";
+                    $row++;
+                    for ($c=0; $c < $num; $c++) {
+                        echo $data[$c] . "<br />\n";
+                    }
+                }
+            }
+            fclose($handle);
+        }
+    }
 }
