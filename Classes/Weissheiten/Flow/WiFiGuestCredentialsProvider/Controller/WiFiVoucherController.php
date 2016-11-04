@@ -53,11 +53,7 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     protected function initializeAction()
     {
-        $this->outlets = array(
-            // calculated hash for demo password: $2y$10$XXG2015cn2lzS6r7o8BmLuBpnBjjQUDpSlNBQuymnli5x3.b1aD/K
-            array('outletcode' => '1010', 'outletpassword' => 'salzpfeffer434'),
-            array('outletcode' => '1070', 'outletpassword' => 'exchangeThisPW')
-        );
+
     }
 
     /**
@@ -74,17 +70,42 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
 
         if ($found_outlet!==null && password_verify($password, $found_outlet->getPwhash())) {
             $voucher = $this->WiFiVoucherRepository->findFirst();
+            $voucher->setOutlet($found_outlet);
+            $voucher->setRequesttime(new \DateTime('now'));
+
+            // configure the JSON Output for this view if requested
+            if(is_a($this->view,'\TYPO3\Flow\Mvc\View\JsonView')){
+                $this->view->setConfiguration(
+                    array(
+                        'value' => array(
+                            '_only' => array('status', 'wifivoucher'),
+                            'wifivoucher' => array(
+                                '_only' => array('username', 'password', 'validitymin', 'outlet', 'requesttime'),
+                                    '_descend' => array(
+                                    'requesttime' => array(
+                                        '_only' => array('date')
+                                    ),
+                                    'outlet' => array(
+                                        '_only' => array('name', 'zipcode')
+                                    )
+                                )
+                            )
+                        )
+                     )
+                );
+            }
+
             $this->view->assign(
                 'value',
                 array(
                     'status' => 1,
-                    'voucher' => $voucher
+                    'wifivoucher' => $voucher
                 )
             );
         } else {
             $this->view->assign(
                 'value',
-                array('status' => 0, 'voucher' => 'Error while getting voucher')
+                array('status' => 0, 'wifivoucher' => 'Error while getting voucher')
             );
         }
     }

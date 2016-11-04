@@ -8,9 +8,12 @@
 <f:section name="Content">
     <f:if condition="{value.status}==1">
         <f:then>
-            <p>Username: {value.voucher.username}</p>
-            <p>Password: {value.voucher.password}</p>
-            <p>Validity: {value.voucher.validitymin} mins</p>
+            Voucher details:
+            <p>Username: {value.WiFiVoucher.username}</p>
+            <p>Password: {value.WiFiVoucher.password}</p>
+            <p>Validity: {value.WiFiVoucher.validitymin} mins</p>
+            <br />
+            <p>Voucher assigned to </p>
         </f:then>
         <f:else>
             Error while fetching Voucher - please check Outlet ID and SecurityHash.
