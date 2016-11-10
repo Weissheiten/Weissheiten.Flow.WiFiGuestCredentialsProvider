@@ -7,6 +7,7 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Persistence\Repository;
+use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet;
 
 /**
  * @Flow\Scope("singleton")
@@ -22,9 +23,26 @@ class OutletRepository extends Repository
      */
     public function findFirst()
     {
-        $voucher = $this->createQuery()->setLimit(1)->execute()->toArray();
-        if (count($voucher)>0) {
-            return $voucher[0];
+        $outlet = $this->createQuery()->setLimit(1)->execute()->toArray();
+        if (count($outlet)>0) {
+            return $outlet[0];
+        }
+        return null;
+    }
+
+    /**
+     * @param string $outletName
+     *
+     * @return Outlet
+     * @api
+     * @see \TYPO3\Flow\Persistence\QueryInterface::execute()
+     */
+    public function findOutletByName($outletName){
+        $query = $this->createQuery();
+        $outlet = $query->matching($query->equals('name',$outletName))->setLimit(1)->execute()->toArray();
+
+        if(count($outlet)>0){
+            return $outlet[0];
         }
         return null;
     }

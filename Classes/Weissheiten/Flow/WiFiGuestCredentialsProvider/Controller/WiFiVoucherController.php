@@ -63,25 +63,50 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     public function getVoucherAction($outletTag, $password)
     {
-        /* @var \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet $found_outlet */
-        $found_outlet = null;
+        $responseMessage = "No actions performed.";
 
-        $found_outlet = $this->OutletRepository->findFirst();
+        if($outletTag!=null){
+            /* @var \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet $outlet */
+            $outlet = $this->OutletRepository->findOutletByName($outletTag);
 
-        if ($found_outlet!==null && password_verify($password, $found_outlet->getPwhash())) {
-            $voucher = $this->WiFiVoucherRepository->findFirst();
-            $voucher->setOutlet($found_outlet);
-            $voucher->setRequesttime(new \DateTime('now'));
+            if($outlet!==null && password_verify($password, $outlet->getPwhash())){
+                if ($this->WiFiVoucherRepository->countAll() > 0) {
+                    /* @var WiFiVoucher $voucher */
+                    $voucher = $this->WiFiVoucherRepository->findFirstUnredeemed();
 
+                    if($voucher!=null){
+                        $voucher->setRequesttime(new \DateTime());
+                        $voucher->setOutlet($outlet);
+
+                        $this->WiFiVoucherRepository->update($voucher);
+                        // $this->persistenceManager->persistAll();
+                        $responseMessage = 'OK';
+                    }
+                    else{
+                        $responseMessage = 'There is currently no free voucher in the database, voucher not marked redeemed';
+                    }
+                } else {
+                    $responseMessage = 'There is currently no voucher in the database, voucher not marked redeemed';
+                }
+            }
+            else{
+                $responseMessage = 'There is currently no outlet in the database matching this name, voucher not marked redeemed';
+            }
+        } else {
+            $responseMessage = 'There is currently no outlet in the database, voucher not marked redeemed';
+        }
+
+        // prepare the JSON View for the output of a voucher
+        if($responseMessage==='OK' && $voucher!==null) {
             // configure the JSON Output for this view if requested
-            if(is_a($this->view,'\TYPO3\Flow\Mvc\View\JsonView')){
+            if (is_a($this->view, '\TYPO3\Flow\Mvc\View\JsonView')) {
                 $this->view->setConfiguration(
                     array(
                         'value' => array(
                             '_only' => array('status', 'wifivoucher'),
                             'wifivoucher' => array(
                                 '_only' => array('username', 'password', 'validitymin', 'outlet', 'requesttime'),
-                                    '_descend' => array(
+                                '_descend' => array(
                                     'requesttime' => array(
                                         '_only' => array('date')
                                     ),
@@ -91,21 +116,22 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
                                 )
                             )
                         )
-                     )
+                    )
+                );
+
+                $this->view->assign(
+                    'value',
+                    array(
+                        'status' => 1,
+                        'wifivoucher' => $voucher
+                    )
                 );
             }
-
+        }
+        else {
             $this->view->assign(
                 'value',
-                array(
-                    'status' => 1,
-                    'wifivoucher' => $voucher
-                )
-            );
-        } else {
-            $this->view->assign(
-                'value',
-                array('status' => 0, 'wifivoucher' => 'Error while getting voucher')
+                array('status' => 0, 'wifivoucher' => $responseMessage)
             );
         }
     }

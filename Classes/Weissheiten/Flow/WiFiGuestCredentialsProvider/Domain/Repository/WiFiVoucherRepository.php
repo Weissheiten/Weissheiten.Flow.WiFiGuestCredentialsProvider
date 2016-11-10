@@ -20,9 +20,11 @@ class WiFiVoucherRepository extends Repository
      * @api
      * @see \TYPO3\Flow\Persistence\QueryInterface::execute()
      */
-    public function findFirst()
+    public function findFirstUnredeemed()
     {
-        $voucher = $this->createQuery()->setLimit(1)->execute()->toArray();
+        $query = $this->createQuery();
+        $voucher = $query->matching($query->equals('requesttime',null))->setLimit(1)->execute()->toArray();
+
         if (count($voucher)>0) {
             return $voucher[0];
         }

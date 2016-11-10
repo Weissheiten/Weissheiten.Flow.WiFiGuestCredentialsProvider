@@ -24,7 +24,7 @@ class WiFiVoucher
     /**
      * @var string
      * @Flow\Validate(type="NotEmpty")
-     * @Flow\Validate(type="StringLength", options={ "minimum"=7, "maximum"=7 })
+     * @Flow\Validate(type="StringLength", options={ "minimum"=3, "maximum"=20 })
      */
     protected $password;
 

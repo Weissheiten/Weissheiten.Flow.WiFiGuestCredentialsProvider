@@ -104,30 +104,40 @@ OUT;
      * Sets the first voucher found in the database as redeemed with the current timestamp
      * in the first outlet found
      *
-     * @return void
+     * @param string $outletname - outlet for which a voucher should be redeemed
+     *
+     * @return bool
      */
-    public function markVoucherRedeemedCommand()
+    public function markVoucherRedeemedCommand($outletname)
     {
-        if ($this->outletRepository->countAll() > 0) {
-            /* @var Outlet $outlet */
-            $outlet = $this->outletRepository->findAll()->toArray()[0];
+        if($outletname != null){
+            $outlet = $this->outletRepository->findOutletByName($outletname);
+            if($outlet!=null){
+                if ($this->voucherRepository->countAll() > 0) {
+                    /* @var WiFiVoucher $voucher */
+                    $voucher = $this->voucherRepository->findFirstUnredeemed();
 
-            if ($this->voucherRepository->countAll() > 0) {
-                /* @var WiFiVoucher $voucher */
-                $voucher = $this->voucherRepository->findAll()[0];
-                $voucher->setRequesttime(new \DateTime());
-                $voucher->setOutlet($outlet);
+                    if($voucher!=null){
+                        $voucher->setRequesttime(new \DateTime());
+                        $voucher->setOutlet($outlet);
 
-                $this->voucherRepository->update($voucher);
-//                $this->persistenceManager->persistAll();
+                        $this->voucherRepository->update($voucher);
+                        // $this->persistenceManager->persistAll();
 
-                $this->outputLine(
-                    "The voucher %s was redeemed for outlet %s with timestamp %s.",
-                    array($voucher->getUsername(), $outlet->getName(), $voucher->getRequesttime()->format('d.M.Y h:s'))
-                );
-
-            } else {
-                $this->outputLine('There is currently no voucher in the database, voucher not marked redeemed');
+                        $this->outputLine(
+                            "The voucher %s was redeemed for outlet %s with timestamp %s.",
+                            array($voucher->getUsername(), $outlet->getName(), $voucher->getRequesttime()->format('d.M.Y h:s'))
+                        );
+                    }
+                    else{
+                        $this->outputLine('There is currently no free voucher in the database, voucher not marked redeemed');
+                    }
+                } else {
+                    $this->outputLine('There is currently no voucher in the database, voucher not marked redeemed');
+                }
+            }
+            else{
+                $this->outputLine('There is currently no outlet in the database matching this name, voucher not marked redeemed');
             }
         } else {
             $this->outputLine('There is currently no outlet in the database, voucher not marked redeemed');
@@ -211,13 +221,13 @@ OUT;
             while (($data = fgetcsv($handle, ",")) !== FALSE) {
                 // the CSV coming from Sputnik always has the format: Username, Password, Type, Minutes, Megabytes limit, 10
                 // only 3 of the first 4 fields are needed
-                if(preg_match('/^(\w|\d)+$/',$data[0]) && !is_numeric($data[1] && !is_numeric($data[3]))){
-                    $num = count($data);
-                    echo "<p> $num Felder in Zeile $row: <br /></p>\n";
-                    $row++;
-                    for ($c=0; $c < $num; $c++) {
-                        echo $data[$c] . "<br />\n";
-                    }
+                if(preg_match('/^(\w|\d)+$/',$data[0]) && !is_numeric($data[1] && !is_numeric($data[3]))) {
+                    $voucher = new WiFiVoucher();
+                    $voucher->setUsername($data[0]);
+                    $voucher->setPassword($data[1]);
+                    $voucher->setValiditymin(360);
+
+                    $this->voucherRepository->add($voucher);
                 }
             }
             fclose($handle);
