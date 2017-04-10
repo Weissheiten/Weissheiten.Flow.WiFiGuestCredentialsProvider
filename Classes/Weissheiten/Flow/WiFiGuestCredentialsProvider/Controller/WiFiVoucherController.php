@@ -79,7 +79,7 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
                         $voucher->setOutlet($outlet);
 
                         $this->WiFiVoucherRepository->update($voucher);
-                        // $this->persistenceManager->persistAll();
+                        $this->persistenceManager->persistAll();
                         $responseMessage = 'OK';
                     }
                     else{
