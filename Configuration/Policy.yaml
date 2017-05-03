@@ -1,10 +1,10 @@
 privilegeTargets:
-  'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
      'Weissheiten.Flow.WiFiGuestCredentialsProvider:AuthorizationActions':
         matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\WiFiVoucherController->get(.*)())'
 
 roles:
-  'TYPO3.Flow:Everybody':
+  'Neos.Flow:Everybody':
     privileges:
       -
         privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:AuthorizationActions'

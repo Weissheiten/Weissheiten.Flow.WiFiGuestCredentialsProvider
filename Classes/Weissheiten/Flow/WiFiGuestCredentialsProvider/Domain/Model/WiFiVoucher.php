@@ -5,7 +5,7 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model;
  * This file is part of the Weissheiten.Flow.WiFiGuestCredentialsProvider package.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -1,7 +1,8 @@
-TYPO3:
+
+Neos:
   Flow:
     mvc:
       routes:
-        'Weissheiten.Flow.WiFiGuestCredentialsProvider':
+        Weissheiten.Flow.WiFiGuestCredentialsProvider:
           variables:
-            'prefix': 'wifivoucher'
+            prefix: wifivoucher
