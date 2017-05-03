@@ -1,6 +1,6 @@
 {
     "name": "weissheiten/flow-wifiguestcredentialsprovider",
-    "type": "typo3-flow-package",
+    "type": "neos-package",
     "description": "Add description here",
     "require": {
         "neos/flow": "~4.0"
