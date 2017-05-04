@@ -5,22 +5,22 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller;
  * This file is part of the Weissheiten.Flow.WiFiGuestCredentialsProvider package.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\Repository;
-use TYPO3\Flow\Persistence\Generic\PersistenceManager;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\Repository;
+use Neos\Flow\Persistence\Generic\PersistenceManager;
 
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\OutletRepository;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\WiFiVoucherRepository;
 
-class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
+class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
 {
     /**
      * @var array
      */
     protected $viewFormatToObjectNameMap = array(
-        'html' => 'TYPO3\Fluid\View\TemplateView',
-        'json' => 'TYPO3\Flow\Mvc\View\JsonView'
+        'html' => 'Neos\FluidAdaptor\View\TemplateView',
+        'json' => 'Neos\Flow\Mvc\View\JsonView'
     );
 
     /**
@@ -99,7 +99,7 @@ class WiFiVoucherController extends \TYPO3\Flow\Mvc\Controller\ActionController
         // prepare the JSON View for the output of a voucher
         if($responseMessage==='OK' && $voucher!==null) {
             // configure the JSON Output for this view if requested
-            if (is_a($this->view, '\TYPO3\Flow\Mvc\View\JsonView')) {
+            if (is_a($this->view, '\Neos\Flow\Mvc\View\JsonView')) {
                 $this->view->setConfiguration(
                     array(
                         'value' => array(

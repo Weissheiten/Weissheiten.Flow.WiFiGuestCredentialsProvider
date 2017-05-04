@@ -5,8 +5,8 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository;
  * This file is part of the Weissheiten.Flow.WiFiGuestCredentialsProvider package.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\Repository;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\Repository;
 
 /**
  * @Flow\Scope("singleton")
@@ -18,7 +18,7 @@ class WiFiVoucherRepository extends Repository
      *
      * @return \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher
      * @api
-     * @see \TYPO3\Flow\Persistence\QueryInterface::execute()
+     * @see \Neos\Flow\Persistence\QueryInterface::execute()
      */
     public function findFirstUnredeemed()
     {

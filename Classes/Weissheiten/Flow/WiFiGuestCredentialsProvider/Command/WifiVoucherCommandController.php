@@ -5,8 +5,8 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Command;
  * This file is part of the Weissheiten.Flow.WiFiGuestCredentialsProvider package.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet;
@@ -15,7 +15,7 @@ use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository;
 /**
  * @Flow\Scope("singleton")
  */
-class WifiVoucherCommandController extends \TYPO3\Flow\Cli\CommandController
+class WifiVoucherCommandController extends \Neos\Flow\Cli\CommandController
 {
 
     /**
@@ -33,7 +33,7 @@ class WifiVoucherCommandController extends \TYPO3\Flow\Cli\CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+     * @var \Neos\Flow\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
 
