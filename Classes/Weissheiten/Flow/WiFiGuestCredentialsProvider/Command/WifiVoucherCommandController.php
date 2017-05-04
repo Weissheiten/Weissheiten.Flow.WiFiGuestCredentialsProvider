@@ -182,11 +182,13 @@ OUT;
                 $redeemed = ($voucher->getRequesttime()!==null) ?
                     $voucher->getRequesttime()->format('d.M.Y h:s') : 'not redeemed';
 
+                $outlet = ($voucher->getOutlet()!==null) ? $voucher->getOutlet()->getName() : 'n/a';
+
                 $this->outputLine(
                     '%s | %s | %s',
                     array($voucher->getUsername(),
                         $redeemed,
-                        $voucher->getOutlet()->getName())
+                        $outlet)
                 );
             }
         } else {
