@@ -198,4 +198,18 @@ OUT;
             array($outletCount, $voucherCount)
         );
     }
+
+    /**
+     * Creates a statistics file
+     * @return void
+     */
+
+    public function createStatisticsCommand(){
+        $stats = $this->voucherRepository->createStatisticsArray();
+        foreach($stats as $entry)
+        $this->outputLine(
+            $entry[0] . ' ' . $entry[1]
+        );
+    }
+
 }

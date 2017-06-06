@@ -6,7 +6,7 @@ namespace Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Persistence\Repository;
+use Neos\Flow\Persistence\Doctrine\Repository;
 
 /**
  * @Flow\Scope("singleton")
@@ -27,5 +27,15 @@ class WiFiVoucherRepository extends Repository
             return $voucher[0];
         }
         return null;
+    }
+
+    /**
+     * Gets a statistics array with the entries "outletName" and "Count"
+     * @return array
+     */
+    public function createStatisticsArray(){
+        $query = $this->createQuery();
+        $query->getQueryBuilder()->addGroupBy('name')->addSelect('COUNT(zipcode)');
+        return $query->execute()->toArray();
     }
 }
