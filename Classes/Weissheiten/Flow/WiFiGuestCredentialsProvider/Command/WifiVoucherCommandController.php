@@ -235,4 +235,29 @@ OUT;
             fclose($handle);
         }
     }
+
+    /**
+     * Counts the vouchers still available for distribution in the system
+     * @return void
+     */
+    public function getAvailableVoucherCountCommand(){
+        $voucherCount = $this->voucherRepository->getNonRedeemedVoucherCount();
+        if($voucherCount!=null){
+            $this->outputLine($voucherCount);
+        }
+    }
+
+    /**
+     * Creates a statistics file
+     * @return void
+     */
+    public function createStatisticsCommand(){
+        $vouchers = $this->voucherRepository->createStatisticsArray();
+
+        if($vouchers!=null && is_array($vouchers)){
+            foreach($vouchers as $voucher){
+                $this->outputLine(implode(" | " , $voucher));
+            }
+        }
+    }
 }
