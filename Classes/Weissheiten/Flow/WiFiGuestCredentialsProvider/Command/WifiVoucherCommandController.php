@@ -93,7 +93,7 @@ OUT;
         $outlet = new Outlet();
         $outlet->setName($name);
         $outlet->setZipcode($zipcode);
-        $outlet->setPwhash(password_hash($pwhash,CRYPT_BLOWFISH));
+        $outlet->setPwhash(password_hash($pwhash, CRYPT_BLOWFISH));
 
         $this->outletRepository->add($outlet);
 
@@ -106,18 +106,18 @@ OUT;
      *
      * @param string $outletname - outlet for which a voucher should be redeemed
      *
-     * @return bool
+     * @return void
      */
     public function markVoucherRedeemedCommand($outletname)
     {
-        if($outletname != null){
+        if ($outletname != null) {
             $outlet = $this->outletRepository->findOutletByName($outletname);
-            if($outlet!=null){
+            if ($outlet!=null) {
                 if ($this->voucherRepository->countAll() > 0) {
                     /* @var WiFiVoucher $voucher */
                     $voucher = $this->voucherRepository->findFirstUnredeemed();
 
-                    if($voucher!=null){
+                    if ($voucher!=null) {
                         $voucher->setRequesttime(new \DateTime());
                         $voucher->setOutlet($outlet);
 
@@ -128,15 +128,13 @@ OUT;
                             "The voucher %s was redeemed for outlet %s with timestamp %s.",
                             array($voucher->getUsername(), $outlet->getName(), $voucher->getRequesttime()->format('d.M.Y h:s'))
                         );
-                    }
-                    else{
+                    } else {
                         $this->outputLine('There is currently no free voucher in the database, voucher not marked redeemed');
                     }
                 } else {
                     $this->outputLine('There is currently no voucher in the database, voucher not marked redeemed');
                 }
-            }
-            else{
+            } else {
                 $this->outputLine('There is currently no outlet in the database matching this name, voucher not marked redeemed');
             }
         } else {
@@ -216,14 +214,15 @@ OUT;
     /**
      * @param string $path Sourcefile
      */
-    public function importVoucherListFromCSVCommand($path){
+    public function importVoucherListFromCSVCommand($path)
+    {
         // read csv
         $row = 1;
-        if (($handle = fopen($path, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, ",")) !== FALSE) {
+        if (($handle = fopen($path, "r")) !== false) {
+            while (($data = fgetcsv($handle, ",")) !== false) {
                 // the CSV coming from Sputnik always has the format: Username, Password, Type, Minutes, Megabytes limit, 10
                 // only 3 of the first 4 fields are needed
-                if(preg_match('/^(\w|\d)+$/',$data[0]) && !is_numeric($data[1] && !is_numeric($data[3]))) {
+                if (preg_match('/^(\w|\d)+$/', $data[0]) && !is_numeric($data[1] && !is_numeric($data[3]))) {
                     $voucher = new WiFiVoucher();
                     $voucher->setUsername($data[0]);
                     $voucher->setPassword($data[1]);
@@ -240,9 +239,10 @@ OUT;
      * Counts the vouchers still available for distribution in the system
      * @return void
      */
-    public function getAvailableVoucherCountCommand(){
+    public function getAvailableVoucherCountCommand()
+    {
         $voucherCount = $this->voucherRepository->getNonRedeemedVoucherCount();
-        if($voucherCount!=null){
+        if ($voucherCount!=null) {
             $this->outputLine($voucherCount);
         }
     }
@@ -251,12 +251,13 @@ OUT;
      * Creates a statistics file
      * @return void
      */
-    public function createStatisticsCommand(){
+    public function createStatisticsCommand()
+    {
         $vouchers = $this->voucherRepository->createStatisticsArray();
 
-        if($vouchers!=null && is_array($vouchers)){
-            foreach($vouchers as $voucher){
-                $this->outputLine(implode(" | " , $voucher));
+        if ($vouchers!=null && is_array($vouchers)) {
+            foreach ($vouchers as $voucher) {
+                $this->outputLine(implode(" | ", $voucher));
             }
         }
     }

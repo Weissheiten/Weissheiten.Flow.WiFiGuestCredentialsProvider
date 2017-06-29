@@ -53,7 +53,6 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
      */
     protected function initializeAction()
     {
-
     }
 
     /**
@@ -65,31 +64,29 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
     {
         $responseMessage = "No actions performed.";
 
-        if($outletTag!=null){
+        if ($outletTag!=null) {
             /* @var \Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet $outlet */
             $outlet = $this->OutletRepository->findOutletByName($outletTag);
 
-            if($outlet!==null && password_verify($password, $outlet->getPwhash())){
+            if ($outlet!==null && password_verify($password, $outlet->getPwhash())) {
                 if ($this->WiFiVoucherRepository->countAll() > 0) {
                     /* @var WiFiVoucher $voucher */
                     $voucher = $this->WiFiVoucherRepository->findFirstUnredeemed();
 
-                    if($voucher!=null){
+                    if ($voucher!=null) {
                         $voucher->setRequesttime(new \DateTime());
                         $voucher->setOutlet($outlet);
 
                         $this->WiFiVoucherRepository->update($voucher);
                         $this->persistenceManager->persistAll();
                         $responseMessage = 'OK';
-                    }
-                    else{
+                    } else {
                         $responseMessage = 'There is currently no free voucher in the database, voucher not marked redeemed';
                     }
                 } else {
                     $responseMessage = 'There is currently no voucher in the database, voucher not marked redeemed';
                 }
-            }
-            else{
+            } else {
                 $responseMessage = 'There is currently no outlet in the database matching this name, voucher not marked redeemed';
             }
         } else {
@@ -97,7 +94,7 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
         }
 
         // prepare the JSON View for the output of a voucher
-        if($responseMessage==='OK' && $voucher!==null) {
+        if ($responseMessage==='OK' && $voucher!==null) {
             // configure the JSON Output for this view if requested
             if (is_a($this->view, '\Neos\Flow\Mvc\View\JsonView')) {
                 $this->view->setConfiguration(
@@ -127,8 +124,7 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
                     )
                 );
             }
-        }
-        else {
+        } else {
             $this->view->assign(
                 'value',
                 array('status' => 0, 'wifivoucher' => $responseMessage)

@@ -23,7 +23,7 @@ class WiFiVoucherRepository extends Repository
     public function findFirstUnredeemed()
     {
         $query = $this->createQuery();
-        $voucher = $query->matching($query->equals('requesttime',null))->setLimit(1)->execute()->toArray();
+        $voucher = $query->matching($query->equals('requesttime', null))->setLimit(1)->execute()->toArray();
 
         if (count($voucher)>0) {
             return $voucher[0];
@@ -39,7 +39,7 @@ class WiFiVoucherRepository extends Repository
     public function getNonRedeemedVoucherCount()
     {
         $query = $this->createQuery();
-        $cond = $query->equals('outlet', NULL);
+        $cond = $query->equals('outlet', null);
         return $query->matching($cond)->count();
     }
 
@@ -47,10 +47,16 @@ class WiFiVoucherRepository extends Repository
      * Gets a statistics array with the entries "outletName" and "Count"
      * @return array
      */
-    public function createStatisticsArray(){
+    public function createStatisticsArray()
+    {
         $query = $this->createQueryBuilder('wv')
             ->select('o.name, COUNT(o.name)')
-            ->join('Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet','o', \Doctrine\ORM\Query\Expr\Join::WITH, 'wv.outlet=o')
+            ->join(
+                'Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet',
+                'o',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                'wv.outlet=o'
+            )
             ->groupBy('wv.outlet')
             ->getQuery();
         return $query->execute();

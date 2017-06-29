@@ -37,11 +37,12 @@ class OutletRepository extends Repository
      * @api
      * @see \Neos\Flow\Persistence\QueryInterface::execute()
      */
-    public function findOutletByName($outletName){
+    public function findOutletByName($outletName)
+    {
         $query = $this->createQuery();
-        $outlet = $query->matching($query->equals('name',$outletName))->setLimit(1)->execute()->toArray();
+        $outlet = $query->matching($query->equals('name', $outletName))->setLimit(1)->execute()->toArray();
 
-        if(count($outlet)>0){
+        if (count($outlet)>0) {
             return $outlet[0];
         }
         return null;
