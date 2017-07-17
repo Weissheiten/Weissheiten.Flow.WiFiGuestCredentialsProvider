@@ -1,4 +1,3 @@
-
 Neos:
   Flow:
     mvc:
@@ -6,3 +5,18 @@ Neos:
         Weissheiten.Flow.WiFiGuestCredentialsProvider:
           variables:
             prefix: wifivoucher
+  Neos:
+    modules:
+      management:
+        submodules:
+          WiFiVoucher:
+            label: 'WiFi Voucher'
+            controller: Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\ReportController
+            description: 'WiFi Voucher Reports'
+            icon: icon-wifi
+            privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
+            additionalResources:
+              javaScripts:
+                - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/js/wifiguestcredentialsprovider.js'
+              styleSheets:
+                - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/css/wifiguestcredentialsprovider.css'

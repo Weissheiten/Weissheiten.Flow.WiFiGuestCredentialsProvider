@@ -3,7 +3,20 @@ privilegeTargets:
      'Weissheiten.Flow.WiFiGuestCredentialsProvider:AuthorizationActions':
         matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\WiFiVoucherController->get(.*)())'
 
+     'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions':
+        matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\ReportController->index(.*)())'
+
 roles:
+  'Neos.Neos:Administrator':
+    privileges:
+      -
+        privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
+        permission: GRANT
+  'Neos.Neos:WiFiReportAccess':
+    privileges:
+      -
+        privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
+        permission: GRANT
   'Neos.Flow:Everybody':
     privileges:
       -

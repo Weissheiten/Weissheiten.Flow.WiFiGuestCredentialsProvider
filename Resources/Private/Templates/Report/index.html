@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+<f:layout name="Default" />
+
+<f:section name="Title">Voucher Statistiken</f:section>
+
+<f:section name="Content">
+    <h2 class="statisticsentry-header">Gesamtüberblick Voucher</h2>
+    <table class="statisticsentry-table">
+        <tr>
+            <th class="statisticsentry-description">Beschreibung</th>
+            <th>Anzahl</th>
+        </tr>
+        <tr>
+            <td>Verfügbar</td>
+            <td class="statisticsentry-number">{nonRedeemedVoucherCount}</td>
+        </tr>
+        <tr>
+            <td>Ausgegeben</td>
+            <td class="statisticsentry-number">{redeemedVoucherCount}</td>
+        </tr>
+    </table>
+
+    <h2 class="statisticsentry-header">Voucher pro Outlet gesamt</h2>
+    <table class="statisticsentry-table">
+        <tr>
+            <th class="statisticsentry-description">Outlet</th>
+            <th>Anzahl</th>
+        </tr>
+
+        <f:for each="{vouchers}" as="month" key="monthtag">
+            <tr>
+                <td class="monthtag" colspan="2"><strong>{monthtag}</strong></td>
+            </tr>
+
+            <f:for each="{month}" as="outlet" key="outlettag">
+                <tr>
+                    <td>{outlettag}</td>
+                    <td class="statisticsentry-number">{outlet}</td>
+                </tr>
+            </f:for>
+
+        </f:for>
+    </table>
+
+
+
+
+
+</f:section>

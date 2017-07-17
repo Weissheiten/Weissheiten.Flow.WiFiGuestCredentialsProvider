@@ -32,15 +32,37 @@ class WiFiVoucherRepository extends Repository
     }
 
     /**
-     * Count the number of unredeemed vouchers in the repository
+     * Returns all vouchers which have been redeemed
      *
-     * @return int
+     * @return array<\Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher>
      */
+    public function findAllRedeemed()
+    {
+        $query = $this->createQuery();
+        return $query->matching($query->logicalNot($query->equals('requesttime', null)))->execute()->toArray();
+    }
+
+    /**
+ * Count the number of unredeemed vouchers in the repository
+ *
+ * @return int
+ */
     public function getNonRedeemedVoucherCount()
     {
         $query = $this->createQuery();
         $cond = $query->equals('outlet', null);
         return $query->matching($cond)->count();
+    }
+
+    /**
+     * Count the number of redeemed vouchers in the repository
+     *
+     * @return int
+     */
+    public function getRedeemedVoucherCount()
+    {
+        $query = $this->createQuery();
+        return $query->matching($query->logicalNot($query->equals('requesttime', null)))->count();
     }
 
     /**
@@ -50,7 +72,7 @@ class WiFiVoucherRepository extends Repository
     public function createStatisticsArray()
     {
         $query = $this->createQueryBuilder('wv')
-            ->select('o.name, COUNT(o.name)')
+            ->select('o.name, wv.requesttime')
             ->join(
                 'Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\Outlet',
                 'o',
