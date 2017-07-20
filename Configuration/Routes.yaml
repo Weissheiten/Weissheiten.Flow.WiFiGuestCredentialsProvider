@@ -7,3 +7,12 @@
     '@action': 'getVoucher'
     '@format': 'html'
   appendExceedingArguments: true
+
+-
+  name:  'Voucherlist'
+  uriPattern: 'neos/management/WiFiVoucher/Report/getVoucherRequestEntries.json'
+  defaults:
+    '@package': 'Weissheiten.Flow.WiFiGuestCredentialsProvider'
+    '@controller': 'Report'
+    '@action': 'getVoucherRequestEntries'
+    '@format': 'json'

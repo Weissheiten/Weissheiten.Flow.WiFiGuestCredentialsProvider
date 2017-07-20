@@ -1,0 +1,30 @@
+{
+  "name": "weissheiten.flow.wifiguestcredentialsprovider",
+  "version": "1.0.0",
+  "description": "WiFi Voucher distribution service and statistics module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Weissheiten/Weissheiten.Flow.WiFiGuestCredentialsProvider.git"
+  },
+  "author": "Florian Weiss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Weissheiten/Weissheiten.Flow.WiFiGuestCredentialsProvider/issues"
+  },
+  "homepage": "https://github.com/Weissheiten/Weissheiten.Flow.WiFiGuestCredentialsProvider#readme",
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "webpack": "^3.3.0"
+  }
+}

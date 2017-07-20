@@ -4,7 +4,7 @@ privilegeTargets:
         matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\WiFiVoucherController->get(.*)())'
 
      'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions':
-        matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\ReportController->index(.*)())'
+        matcher: 'method(Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\ReportController->(index|getVoucherRequestEntries)Action(.*)())'
 
 roles:
   'Neos.Neos:Administrator':

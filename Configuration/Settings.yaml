@@ -5,6 +5,15 @@ Neos:
         Weissheiten.Flow.WiFiGuestCredentialsProvider:
           variables:
             prefix: wifivoucher
+    security:
+      authentication:
+        providers:
+          'Neos.Neos:Backend':
+            requestPatterns:
+              'Weissheiten.Flow.WiFiGuestCredentialsProvider':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\.*'
   Neos:
     modules:
       management:
@@ -16,7 +25,5 @@ Neos:
             icon: icon-wifi
             privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
             additionalResources:
-              javaScripts:
-                - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/js/wifiguestcredentialsprovider.js'
               styleSheets:
-                - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/css/wifiguestcredentialsprovider.css'
+                - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/Css/wifiguestcredentialsprovider.css'

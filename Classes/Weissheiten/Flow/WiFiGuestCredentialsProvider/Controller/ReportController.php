@@ -24,6 +24,13 @@ class ReportController extends \Neos\Flow\Mvc\Controller\ActionController
     );
 
     /**
+     * A list of IANA media types which are supported by this controller
+     *
+     * @var array
+     */
+    protected $supportedMediaTypes = array('application/json', 'text/html');
+
+    /**
      * @Flow\Inject
      * @var OutletRepository
      */
@@ -78,5 +85,15 @@ class ReportController extends \Neos\Flow\Mvc\Controller\ActionController
             'nonRedeemedVoucherCount' => $nonRedeemedVoucherCount,
             'vouchers' => $vouchers_mapped
         ));
+    }
+
+    /**
+     * Returns all voucher requests from the database
+     * @return void
+     */
+    public function getVoucherRequestEntriesAction()
+    {
+        $vouchers = $this->WiFiVoucherRepository->findAll();
+        $this->view->assign('value', $vouchers);
     }
 }
