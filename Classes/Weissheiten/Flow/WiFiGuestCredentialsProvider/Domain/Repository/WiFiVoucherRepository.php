@@ -43,6 +43,17 @@ class WiFiVoucherRepository extends Repository
     }
 
     /**
+     * Returns all vouchers
+     *
+     * @return array<\Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher>
+     */
+    public function findAllFixed()
+    {
+        $query = $this->createQuery();
+        return $query->execute()->toArray();
+    }
+
+    /**
  * Count the number of unredeemed vouchers in the repository
  *
  * @return int

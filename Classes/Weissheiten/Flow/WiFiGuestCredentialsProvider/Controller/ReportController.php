@@ -93,7 +93,28 @@ class ReportController extends \Neos\Flow\Mvc\Controller\ActionController
      */
     public function getVoucherRequestEntriesAction()
     {
-        $vouchers = $this->WiFiVoucherRepository->findAll();
-        $this->view->assign('value', $vouchers);
+        // configure the JSON Output for this view if requested
+        if (is_a($this->view, '\Neos\Flow\Mvc\View\JsonView')) {
+            $this->view->setConfiguration(
+                array(
+                    'value' =>
+                        array(
+                            array(
+                                '_exclude' => array('password'),
+                                '_descend' => array(
+                                    'requesttime' => array(
+                                        '_only' => array('date')
+                                    ),
+                                    'outlet' => array(
+                                        '_only' => array('name', 'zipcode')
+                                    )
+                                )
+                            )
+                        )
+                )
+            );
+            $vouchers = $this->WiFiVoucherRepository->findAll();
+            $this->view->assign('value', $vouchers);
+        }
     }
 }
