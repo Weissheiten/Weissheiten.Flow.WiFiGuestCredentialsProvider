@@ -99,6 +99,7 @@ class ReportController extends \Neos\Flow\Mvc\Controller\ActionController
                 array(
                     'value' =>
                         array(
+                            '_descendAll' =>
                             array(
                                 '_exclude' => array('password'),
                                 '_descend' => array(
