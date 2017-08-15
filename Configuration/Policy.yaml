@@ -12,11 +12,12 @@ roles:
       -
         privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
         permission: GRANT
-  'Neos.Neos:WiFiReportAccess':
+  'Weissheiten.Neos:WiFiReportAccess':
     privileges:
       -
         privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
         permission: GRANT
+
   'Neos.Flow:Everybody':
     privileges:
       -
