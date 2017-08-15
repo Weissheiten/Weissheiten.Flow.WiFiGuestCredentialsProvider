@@ -12,9 +12,9 @@ class DataTable extends Component {
                 <table>
                     <thead>
                         <tr>
-                            <th>Username <button id="stats-sort-username" onClick={this.props.sortClick}>S</button></th>
-                            <th>Requesttime</th>
-                            <th>Outlet</th>
+                            <th>Username <button id="stats-sort-username" onClick={() => this.props.sortClick("username")}>S</button></th>
+                            <th>Requesttime <button id="stats-sort-username" onClick={() => this.props.sortClick("requesttime")}>S</button></th>
+                            <th>Outlet <button id="stats-sort-username" onClick={() => this.props.sortClick("outlet")}>S</button></th>
                         </tr>
                     </thead>
                     <tbody>

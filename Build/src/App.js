@@ -11,16 +11,18 @@ class App extends Component {
     render() {
         return (
           <div className="App">
-              <DataTable entries={this.state.vouchers} sortClick={() => this.handleSortClick("demo")} />
+              <DataTable entries={this.state.vouchers} sortClick={(sortProperty) => this.handleSortClick(sortProperty)} />
           </div>
         );
     }
 
-    handleSortClick(property){
+    handleSortClick(sortProperty){
         var vouchersSorted = this.state.vouchers.slice(0);
-        vouchersSorted.sort(function(a, b){
-            // some sorting
-        });
+
+        vouchersSorted.sort(
+            (a, b) => a.outlet.name.localeCompare(b.outlet.name)
+        );
+
         this.setState({
             vouchers: vouchersSorted
         });
