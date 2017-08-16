@@ -6,11 +6,12 @@ class DataTableEntry extends Component {
     }
 
     render() {
+        let dataentries = this.props.entryvalues;
         return (
             <tr className="statistics-table-entry">
-                <td>{this.props.entryvalues.username}</td>
-                <td>{this.props.entryvalues.requesttime}</td>
-                <td>{this.props.entryvalues.outlet.name}</td>
+                {this.props.columns.map(function(col){
+                    return <td>{dataentries[col]}</td>
+                })}
             </tr>
         );
     }

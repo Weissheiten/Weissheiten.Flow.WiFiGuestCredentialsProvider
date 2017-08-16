@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import DataTableEntry from './DataTableEntry'
+import DataTableColumn from './DataTableColumn'
 
 class DataTable extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            sortedBy: null,
+            groupedBy: null
+        };
     }
 
     render() {
@@ -12,18 +17,31 @@ class DataTable extends Component {
                 <table>
                     <thead>
                         <tr>
-                            <th>Username <button id="stats-sort-username" onClick={() => this.props.sortClick("username")}>S</button></th>
-                            <th>Requesttime <button id="stats-sort-username" onClick={() => this.props.sortClick("requesttime")}>S</button></th>
-                            <th>Outlet <button id="stats-sort-username" onClick={() => this.props.sortClick("outlet")}>S</button></th>
+                            {this.props.datatable.columns.map(function(col){
+                                return <DataTableColumn key={col.key} coldescription={col.header} valuefield={col.lookupproperty} />
+                            })}
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.entries.map(function (nodes) {
-                            return <DataTableEntry key={nodes.username} entryvalues={nodes} />
-                        })}
+                        {this.renderTableEntries()}
                     </tbody>
                 </table>
             </div>
+        );
+    }
+
+    renderTableEntries(){
+        let processedEntries = this.props.datatable.dataentries;
+        let columns = this.props.datatable.columns;
+
+        processedEntries.sort(
+            (a, b) => a.outlet.name.localeCompare(b.outlet.name)
+        );
+
+        return (
+            processedEntries.map(function (nodes) {
+                return <DataTableEntry key={nodes.username} entryvalues={nodes} columns={columns} />;
+            })
         );
     }
 }

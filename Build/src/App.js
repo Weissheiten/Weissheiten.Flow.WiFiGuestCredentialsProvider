@@ -5,13 +5,15 @@ import DataTable from './DataTable';
 class App extends Component {
     constructor(props){
         super(props);
-        this.state = {vouchers: []};
+        this.state = { datatables:[] }
     }
 
     render() {
         return (
           <div className="App">
-              <DataTable entries={this.state.vouchers} sortClick={(sortProperty) => this.handleSortClick(sortProperty)} />
+              {this.state.datatables.map(function(dt){
+                    return <DataTable key={dt.key} datatable={dt}/>
+              })}
           </div>
         );
     }
@@ -48,7 +50,20 @@ class App extends Component {
                         nodes.requesttime = "n/a";
                     }
                 });
-                that.setState({ vouchers: json })
+
+                that.setState({
+                    datatables: [
+                        {
+                            key: 'main',
+                            dataentries: json,
+                            columns: [
+                                { header: "username", lookupproperty: "Username", key: "username"},
+                                { header: "requesttime", lookupproperty: "Requesttime", key: "requesttime"},
+                                { header: "validitymin", lookupproperty: "Validitymin", key: "validitymin"},
+                                { header: "outlet", lookupproperty: "Outlet", key: "outlet"}
+                            ]
+                        }]
+                })
             })
             .catch(function(error) { console.log(error); });
     }
