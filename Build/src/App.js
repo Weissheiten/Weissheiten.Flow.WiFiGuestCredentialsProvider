@@ -18,18 +18,6 @@ class App extends Component {
         );
     }
 
-    handleSortClick(sortProperty){
-        var vouchersSorted = this.state.vouchers.slice(0);
-
-        vouchersSorted.sort(
-            (a, b) => a.outlet.name.localeCompare(b.outlet.name)
-        );
-
-        this.setState({
-            vouchers: vouchersSorted
-        });
-    }
-
     componentDidMount(){
         var that = this;
 
@@ -57,10 +45,10 @@ class App extends Component {
                             key: 'main',
                             dataentries: json,
                             columns: [
-                                { header: "username", lookupproperty: "Username", key: "username"},
-                                { header: "requesttime", lookupproperty: "Requesttime", key: "requesttime"},
-                                { header: "validitymin", lookupproperty: "Validitymin", key: "validitymin"},
-                                { header: "outlet", lookupproperty: "Outlet", key: "outlet"}
+                                { header: "username", lookupproperty: "username", sortfunc:(a, b) => a.username.localeCompare(b.username), key: "username"},
+                                { header: "requesttime", lookupproperty: "requesttime", sortfunc:(a, b) => a.requesttime.localeCompare(b.requesttime), key: "requesttime"},
+                                { header: "validitymin", lookupproperty: "validitymin", sortfunc:(a, b) => a.validitymin < b.validitymin, key: "validitymin"},
+                                { header: "outlet", lookupproperty: "outlet.name", sortfunc: (a, b) => a.outlet.name.localeCompare(b.outlet.name), key: "outlet.name"}
                             ]
                         }]
                 })

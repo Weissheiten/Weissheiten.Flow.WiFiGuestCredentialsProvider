@@ -7,7 +7,7 @@ class DataTableColumn extends Component {
 
     render() {
         return (
-            <th className="statistics-table-column">{this.props.coldescription}</th>
+            <th className="statistics-table-column">{this.props.datacolumn.header}<button onClick={(i) => this.props.handlesortclick(this.props.datacolumn)}>S</button></th>
         );
     }
 
