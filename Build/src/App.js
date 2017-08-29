@@ -83,7 +83,6 @@ class App extends Component {
                                             }
 
                                             outarr[val].entries.push(item);
-                                            outarr[val].count = outarr[val].length++;
                                             return outarr;
                                         }, [])
                                     },
