@@ -45,10 +45,50 @@ class App extends Component {
                             key: 'main',
                             dataentries: json,
                             columns: [
-                                { header: "username", lookupproperty: "username", sortfunc:(a, b) => a.username.localeCompare(b.username), key: "username"},
-                                { header: "requesttime", lookupproperty: "requesttime", sortfunc:(a, b) => a.requesttime.localeCompare(b.requesttime), key: "requesttime"},
-                                { header: "validitymin", lookupproperty: "validitymin", sortfunc:(a, b) => a.validitymin < b.validitymin, key: "validitymin"},
-                                { header: "outlet", lookupproperty: "outlet.name", sortfunc: (a, b) => a.outlet.name.localeCompare(b.outlet.name), key: "outlet.name"}
+                                {
+                                    header: "Username",
+                                    lookupproperty: "username",
+                                    sortfunc:(a, b) => a.username.localeCompare(b.username),
+                                    sortfuncdesc: (a, b) => a.username.localeCompare(b.username)*-1, key: "username"
+                                },
+                                {
+                                    header: "Requesttime",
+                                    lookupproperty: "requesttime",
+                                    sortfunc:(a, b) => a.requesttime.localeCompare(b.requesttime),
+                                    sortfuncdesc:(a, b) => a.requesttime.localeCompare(b.requesttime)*-1, key: "requesttime"
+                                },
+                                {
+                                    header: "Validity in min",
+                                    lookupproperty: "validitymin",
+                                    sortfunc:(a, b) => a.validitymin < b.validitymin,
+                                    sortfuncdesc:(a, b) => a.validitymin > b.validitymin,
+                                    key: "validitymin"
+                                },
+                                {
+                                    header: "Outletname",
+                                    lookupproperty: "outlet.name",
+                                    sortfunc: (a, b) => a.outlet.name.localeCompare(b.outlet.name),
+                                    sortfuncdesc: (a, b) => a.outlet.name.localeCompare(b.outlet.name)*-1,
+                                    groupBy: function(arr){
+                                        return arr.reduce(function(outarr, item){
+
+                                            let val = item.outlet.name;
+
+                                            if(!(val in outarr)){
+                                                outarr[val] = {
+                                                    entries: [],
+                                                    count: 0,
+                                                    name: val
+                                                };
+                                            }
+
+                                            outarr[val].entries.push(item);
+                                            outarr[val].count = outarr[val].length++;
+                                            return outarr;
+                                        }, [])
+                                    },
+                                    key: "outlet.name"
+                                }
                             ]
                         }]
                 })

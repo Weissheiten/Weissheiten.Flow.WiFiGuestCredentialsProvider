@@ -6,12 +6,21 @@ class DataTableColumn extends Component {
     }
 
     render() {
+        let buttonStyles =  {
+            padding:'2pt',
+            height:'auto',
+            lineHeight:'8pt',
+            marginBottom: '4pt',
+            marginLeft: '2pt'
+        };
+
         return (
-            <th className="statistics-table-column">{this.props.datacolumn.header}<button onClick={(i) => this.props.handlesortclick(this.props.datacolumn)}>S</button></th>
+            <th className="statistics-table-column">{this.props.datacolumn.header}
+                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, true)} style={buttonStyles}><i className="icon-arrow-up"></i></button>
+                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, false)} style={buttonStyles}><i className="icon-arrow-down"></i></button>
+            </th>
         );
     }
-
-    // <button onClick={() => this.props.sortClick(this.props.valuefield)}>S</button>
 }
 
 export default DataTableColumn;

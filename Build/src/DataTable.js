@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DataTableEntry from './DataTableEntry'
+import DataTableGroup from './DataTableGroup'
 import DataTableColumn from './DataTableColumn'
 
 class DataTable extends Component {
@@ -7,28 +7,19 @@ class DataTable extends Component {
         super(props);
         this.state = {
             sortedBy: null,
+            sortedAsc: true,
             groupedBy: null
         };
     }
 
-    handleSortClick(column){
+    handleSortClick(column, asc){
         this.setState((prevState, props) => {
-            return {sortedBy: column, groupedBy: prevState.groupedBy};
+            return {
+                sortedBy: column,
+                sortedAsc: asc,
+                groupedBy: prevState.groupedBy
+            };
         });
-
-
-        //alert(sortProperty);
-        /*
-        var vouchersSorted = this.state.vouchers.slice(0);
-
-        vouchersSorted.sort(
-            (a, b) => a.outlet.name.localeCompare(b.outlet.name)
-        );
-
-        this.setState({
-            vouchers: vouchersSorted
-        });
-        */
     }
 
     render() {
@@ -42,13 +33,11 @@ class DataTable extends Component {
                                 return <DataTableColumn
                                     key={col.key}
                                     datacolumn={col}
-                                    handlesortclick={(i) => that.handleSortClick(i)} />
+                                    handlesortclick={(i, sortasc) => that.handleSortClick(i, sortasc)} />
                             })}
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.renderTableEntries()}
-                    </tbody>
+                    {this.renderTableEntries()}
                 </table>
             </div>
         );
@@ -59,14 +48,28 @@ class DataTable extends Component {
         let columns = this.props.datatable.columns;
 
         if(this.state.sortedBy!=null){
-            processedEntries.sort(this.state.sortedBy.sortfunc);
+            (this.state.sortedAsc) ? processedEntries.sort(this.state.sortedBy.sortfunc) : processedEntries.sort(this.state.sortedBy.sortfuncdesc)
         }
 
-        return (
-            processedEntries.map(function (nodes) {
-                return <DataTableEntry key={nodes.username} entryvalues={nodes} columns={columns} />;
-            })
-        );
+        // grouping is processed before entries get sorted inside the groups
+        processedEntries = this.props.datatable.columns[3].groupBy(processedEntries);
+
+        // group if the entry contains keys
+        if(Object.keys(processedEntries).length>0) {
+            return (
+                Object.keys(processedEntries).map(function (group) {
+                    var groupobj = processedEntries[group];
+                    return <DataTableGroup key={group} name={groupobj.name} groupentries={groupobj.entries} columns={columns} />
+                })
+            );
+        }
+        else{
+            return(
+                processedEntries.map(function(nodes){
+                    return <DataTableEntry key={nodes.username} entryvalues={nodes} columns={columns}/>;
+                })
+            );
+        }
     }
 }
 
