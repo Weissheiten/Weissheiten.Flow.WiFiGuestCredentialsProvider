@@ -34,8 +34,8 @@ class App extends Component {
             .then(function(json) {
                 json.map(function(nodes){
                     if(nodes.requesttime==null) {
-                        nodes.outlet = { name: "n/a" }
-                        nodes.requesttime = "n/a";
+                        nodes.outlet = { name: "no outlet" }
+                        nodes.requesttime = "unrequested";
                     }
                 });
 
@@ -49,19 +49,55 @@ class App extends Component {
                                     header: "Username",
                                     lookupproperty: "username",
                                     sortfunc:(a, b) => a.username.localeCompare(b.username),
-                                    sortfuncdesc: (a, b) => a.username.localeCompare(b.username)*-1, key: "username"
+                                    sortfuncdesc: (a, b) => a.username.localeCompare(b.username)*-1, key: "username",
+                                    key: "username"
                                 },
                                 {
                                     header: "Requesttime",
                                     lookupproperty: "requesttime",
                                     sortfunc:(a, b) => a.requesttime.localeCompare(b.requesttime),
-                                    sortfuncdesc:(a, b) => a.requesttime.localeCompare(b.requesttime)*-1, key: "requesttime"
+                                    sortfuncdesc:(a, b) => a.requesttime.localeCompare(b.requesttime)*-1, key: "requesttime",
+                                    groupBy: function(arr){
+                                        return arr.reduce(function(outarr, item){
+
+                                            let val = (item.requesttime=="unrequested") ? "unrequested" : new Date(item.requesttime).getUTCMonth() + '/' + new Date(item.requesttime).getUTCFullYear();
+
+                                            if(!(val in outarr)){
+                                                outarr[val] = {
+                                                    entries: [],
+                                                    count: 0,
+                                                    name: val
+                                                };
+                                            }
+
+                                            outarr[val].entries.push(item);
+                                            return outarr;
+                                        }, [])
+                                    },
+                                    key: "requesttime"
                                 },
                                 {
                                     header: "Validity in min",
                                     lookupproperty: "validitymin",
                                     sortfunc:(a, b) => a.validitymin < b.validitymin,
                                     sortfuncdesc:(a, b) => a.validitymin > b.validitymin,
+                                    groupBy: function(arr){
+                                        return arr.reduce(function(outarr, item){
+
+                                            let val = item.validitymin;
+
+                                            if(!(val in outarr)){
+                                                outarr[val] = {
+                                                    entries: [],
+                                                    count: 0,
+                                                    name: val
+                                                };
+                                            }
+
+                                            outarr[val].entries.push(item);
+                                            return outarr;
+                                        }, [])
+                                    },
                                     key: "validitymin"
                                 },
                                 {

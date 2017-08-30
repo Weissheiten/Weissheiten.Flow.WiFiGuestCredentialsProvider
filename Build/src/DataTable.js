@@ -8,7 +8,8 @@ class DataTable extends Component {
         this.state = {
             sortedBy: null,
             sortedAsc: true,
-            groupedBy: null
+            groupedBy: null,
+            subGroupedBy: null
         };
     }
 
@@ -17,7 +18,8 @@ class DataTable extends Component {
             return {
                 sortedBy: column,
                 sortedAsc: asc,
-                groupedBy: prevState.groupedBy
+                groupedBy: prevState.groupedBy,
+                subGroupedBy: prevState.subGroupedBy
             };
         });
     }
@@ -53,13 +55,23 @@ class DataTable extends Component {
 
         // grouping is processed before entries get sorted inside the groups
         processedEntries = this.props.datatable.columns[3].groupBy(processedEntries);
+        var subgroupf = this.props.datatable.columns[1].groupBy;
+        Object.keys(processedEntries).map(function (group) {
+            processedEntries[group] = subgroupf(processedEntries[group].entries);
+        });
+
 
         // group if the entry contains keys
         if(Object.keys(processedEntries).length>0) {
+
             return (
                 Object.keys(processedEntries).map(function (group) {
                     var groupobj = processedEntries[group];
-                    return <DataTableGroup key={group} name={groupobj.name} groupentries={groupobj.entries} columns={columns} />
+                    return (
+                        Object.keys(groupobj).map(function(subgroup){
+                            return <DataTableGroup key={subgroup} name={group + ' - ' + groupobj[subgroup].name} groupentries={groupobj[subgroup].entries} columns={columns} />
+                        })
+                    )
                 })
             );
         }
