@@ -1,7 +1,0 @@
-tbody.statistics-table-group-collapsed tr{
-  visibility: hidden;
-}
-
-tbody.statistics-table-group-collapsed tr:first-child{
-  visibility: visible;
-}

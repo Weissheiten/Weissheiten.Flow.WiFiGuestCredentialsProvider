@@ -7,7 +7,7 @@ class DataTableGroup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: true
+            expanded: false
         }
     }
 
@@ -19,13 +19,22 @@ class DataTableGroup extends Component {
         return(
             <tbody className={groupClass}>
                 <tr>
-                    <td colSpan={that.props.columns.length}>{this.props.name} ({this.props.groupentries.length})</td>
+                    <td colSpan={that.props.columns.length} onClick={() => this.triggerCollapse()}>{this.props.name} ({this.props.groupentries.length})</td>
                 </tr>
                 {this.props.groupentries.map(function(nodes){
                     return <DataTableEntry key={nodes.username} entryvalues={nodes} columns={that.props.columns}/>
                 })}
             </tbody>
         );
+    }
+
+    triggerCollapse(){
+        this.setState((prevState, props) => {
+            let isExpanded = prevState.expanded;
+            return {
+                expanded: !isExpanded,
+            };
+        });
     }
 }
 

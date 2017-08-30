@@ -19,7 +19,7 @@ var config = {
             },
             {
                 test: /\.(scss|css)$/,
-                loader: 'css-loader!sass-loader'
+                loader: 'style-loader!css-loader!sass-loader'
             }
         ]
     }
