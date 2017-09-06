@@ -19,7 +19,9 @@ class DataTableGroup extends Component {
         return(
             <tbody className={groupClass}>
                 <tr>
-                    <td colSpan={that.props.columns.length} onClick={() => this.triggerCollapse()}>{this.props.name} ({this.props.groupentries.length})</td>
+                    <td onClick={() => this.triggerCollapse()}>{that.props.groupname}</td>
+                    <td colSpan={that.props.columns.length-2} onClick={() => this.triggerCollapse()}>{that.props.subgroupname}</td>
+                    <td onClick={() => this.triggerCollapse()}>Sum ({this.props.groupentries.length})</td>
                 </tr>
                 {this.props.groupentries.map(function(nodes){
                     return <DataTableEntry key={nodes.username} entryvalues={nodes} columns={that.props.columns}/>

@@ -54,8 +54,8 @@ class DataTable extends Component {
         }
 
         // grouping is processed before entries get sorted inside the groups
-        processedEntries = this.props.datatable.columns[3].groupBy(processedEntries);
-        var subgroupf = this.props.datatable.columns[1].groupBy;
+        processedEntries = this.props.datatable.columns[1].groupBy(processedEntries);
+        var subgroupf = this.props.datatable.columns[3].groupBy;
         Object.keys(processedEntries).map(function (group) {
             processedEntries[group] = subgroupf(processedEntries[group].entries);
         });
@@ -63,13 +63,12 @@ class DataTable extends Component {
 
         // group if the entry contains keys
         if(Object.keys(processedEntries).length>0) {
-
             return (
                 Object.keys(processedEntries).map(function (group) {
                     var groupobj = processedEntries[group];
                     return (
                         Object.keys(groupobj).map(function(subgroup){
-                            return <DataTableGroup key={subgroup} name={group + ' - ' + groupobj[subgroup].name} groupentries={groupobj[subgroup].entries} columns={columns} />
+                            return <DataTableGroup key={subgroup} groupname={group} subgroupname={groupobj[subgroup].name} groupentries={groupobj[subgroup].entries} columns={columns} />
                         })
                     )
                 })

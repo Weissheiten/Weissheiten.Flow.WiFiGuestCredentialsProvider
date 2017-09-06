@@ -10,41 +10,19 @@
 
     <script type="text/javascript" src="Resources/Public/JavaScript/bundle.js"></script>
 
-    <h2 class="statisticsentry-header">Gesamtüberblick Voucher</h2>
+    <h2 class="statisticsentry-header">Total voucher statistics</h2>
     <table class="statisticsentry-table">
         <tr>
-            <th class="statisticsentry-description">Beschreibung</th>
-            <th>Anzahl</th>
+            <th class="statisticsentry-description">Description</th>
+            <th>Amount</th>
         </tr>
         <tr>
-            <td>Verfügbar</td>
+            <td>Available</td>
             <td class="statisticsentry-number">{nonRedeemedVoucherCount}</td>
         </tr>
         <tr>
-            <td>Ausgegeben</td>
+            <td>Distributed</td>
             <td class="statisticsentry-number">{redeemedVoucherCount}</td>
         </tr>
-    </table>
-
-    <h2 class="statisticsentry-header">Voucher pro Outlet gesamt</h2>
-    <table class="statisticsentry-table">
-        <tr>
-            <th class="statisticsentry-description">Outlet</th>
-            <th>Anzahl</th>
-        </tr>
-
-        <f:for each="{vouchers}" as="month" key="monthtag">
-            <tr>
-                <td class="monthtag" colspan="2"><strong>{monthtag}</strong></td>
-            </tr>
-
-            <f:for each="{month}" as="outlet" key="outlettag">
-                <tr>
-                    <td>{outlettag}</td>
-                    <td class="statisticsentry-number">{outlet}</td>
-                </tr>
-            </f:for>
-
-        </f:for>
     </table>
 </f:section>
