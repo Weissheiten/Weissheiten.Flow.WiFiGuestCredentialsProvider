@@ -9,6 +9,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\Repository;
 use Neos\Flow\Persistence\Generic\PersistenceManager;
 
+use Neos\SwiftMailer\Message as SwiftMailerMessage;
+
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Model\WiFiVoucher;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\OutletRepository;
 use Weissheiten\Flow\WiFiGuestCredentialsProvider\Domain\Repository\WiFiVoucherRepository;
@@ -42,6 +44,15 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
      */
     protected $WiFiVoucherRepository;
 
+
+
+
+    /**
+     * @Flow\Inject
+     * @var \Neos\Flow\Log\SystemLoggerInterface
+     */
+    protected $systemLogger;
+
     /**
      * Initializes the controller before invoking an action method.
      *
@@ -69,7 +80,9 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
             $outlet = $this->OutletRepository->findOutletByName($outletTag);
 
             if ($outlet!==null && password_verify($password, $outlet->getPwhash())) {
-                if ($this->WiFiVoucherRepository->countAll() > 0) {
+                $vouchercount = $this->WiFiVoucherRepository->getNonRedeemedVoucherCount();
+
+                if ($vouchercount > 0) {
                     /* @var WiFiVoucher $voucher */
                     $voucher = $this->WiFiVoucherRepository->findFirstUnredeemed();
 
@@ -84,8 +97,16 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
                         $responseMessage = 'There is currently no free voucher in the database, voucher not marked redeemed';
                     }
                 } else {
-                    $responseMessage = 'There is currently no voucher in the database, voucher not marked redeemed';
+                    $responseMessage = 'There is currently no free voucher in the database, voucher not marked redeemed';
                 }
+
+                // send an alert e-mail if the vouchercount is low
+                if($vouchercount==100 || $vouchercount==50 || $vouchercount==25 || $vouchercount==0){
+                    // send an infomail, that the vouchercount is low
+                    $this->sendAlertMail($vouchercount);
+                    $responseMessage = 'alert mail sent';
+                }
+
             } else {
                 $responseMessage = 'There is currently no outlet in the database matching this name, voucher not marked redeemed';
             }
@@ -130,5 +151,26 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
                 array('status' => 0, 'wifivoucher' => $responseMessage)
             );
         }
+    }
+
+    /**
+     * Sends an alert e-mail to inform that the voucher count is low
+     *
+     * @param $vouchercount Number of redeemable vouchers left in the system
+     */
+    private function sendAlertMail(int $vouchercount){
+        if (!class_exists(SwiftMailerMessage::class)) {
+            $this->systemLogger->logException('The "neos/swiftmailer" doesn\'t seem to be installed, but is required for the WiFiVoucher Alert feature to work!');
+        }
+
+        $mail = new SwiftMailerMessage();
+
+        $mail
+            ->setFrom(array("office@billardcafe.at" => "Billardcafe WiFi Voucher System"))
+            ->setSubject("WiFi Voucher System | Vorrat an ungenutzten WiFiVouchern im System liegt unter 100")
+            ->setTo(array("webmaster@billardcafe.at" => "Florian Weiss"))
+            ->setCC(array("michael.beneder@billardcafe.at" => "Michael Beneder"))
+            ->setBody("Vorsicht: Der Vorrat an ungenutzten WiFiVouchern beträgt $vouchercount Stück - bitte stellen Sie zeitnah neue Voucher zur Verfügung!", 'text/plain')
+            ->send();
     }
 }

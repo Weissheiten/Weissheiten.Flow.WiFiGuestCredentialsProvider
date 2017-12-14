@@ -212,6 +212,19 @@ OUT;
     }
 
     /**
+     * Clears all vouchers
+     */
+    public function clearVouchersCommand(){
+        $voucherCount = $this->voucherRepository->countAll();
+        $this->voucherRepository->removeAll();
+        $this->persistenceManager->persistAll();
+        $this->outputLine(
+            'Voucher Repository cleared - %u Vouchers were removed',
+            array($voucherCount)
+        );
+    }
+
+    /**
      * @param string $path Sourcefile
      */
     public function importVoucherListFromCSVCommand($path)
