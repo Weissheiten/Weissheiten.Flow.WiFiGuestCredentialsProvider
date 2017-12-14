@@ -27,3 +27,28 @@ Neos:
             additionalResources:
               styleSheets:
                 - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/Css/wifiguestcredentialsprovider.css'
+
+Weissheiten:
+  Flow:
+    WiFiGuestCredentialsProvider:
+      alertEmail:
+        active: true
+        tresholds:
+          - 100
+          - 75
+          - 50
+          - 25
+          - 1
+        from:
+          email: 'office@billardcafe.at'
+          name: 'Billardcafe WiFi Voucher System'
+        subject: 'WiFi Voucher System | Vorrat an ungenutzten WiFiVouchern im System ist niedrig'
+        to:
+          webmaster:
+            email: 'webmaster@billardcafe.at'
+            name: 'Florian Weiss'
+        cc:
+          itsupport:
+            email: 'michael.beneder@billardcafe.at'
+            name: 'Michael Beneder'
+        text: 'Vorsicht: Der Vorrat an ungenutzten WiFiVouchern beträgt %u Stück - bitte stellen Sie zeitnah neue Voucher zur Verfügung!'

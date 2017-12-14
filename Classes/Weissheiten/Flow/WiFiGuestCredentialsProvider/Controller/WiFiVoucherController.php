@@ -45,7 +45,10 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
     protected $WiFiVoucherRepository;
 
 
-
+    /**
+     * @var array
+     */
+    protected $settings;
 
     /**
      * @Flow\Inject
@@ -64,6 +67,16 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
      */
     protected function initializeAction()
     {
+    }
+
+    /**
+     * Inject the settings
+     *
+     * @param array $settings
+     * @return void
+     */
+    public function injectSettings(array $settings) {
+        $this->settings = $settings;
     }
 
     /**
@@ -100,13 +113,14 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
                     $responseMessage = 'There is currently no free voucher in the database, voucher not marked redeemed';
                 }
 
-                // send an alert e-mail if the vouchercount is low
-                if($vouchercount==100 || $vouchercount==50 || $vouchercount==25 || $vouchercount==0){
-                    // send an infomail, that the vouchercount is low
-                    $this->sendAlertMail($vouchercount);
-                    $responseMessage = 'alert mail sent';
+                if ($this->settings['alertEmail']['active']) {
+                    // send an alert e-mail if the vouchercount is low
+                    if (in_array($vouchercount, $this->settings['alertEmail']['tresholds'])) {
+                        // send an infomail, that the vouchercount is low
+                        $this->sendAlertMail($vouchercount);
+                        $responseMessage = 'alert mail sent';
+                    }
                 }
-
             } else {
                 $responseMessage = 'There is currently no outlet in the database matching this name, voucher not marked redeemed';
             }
@@ -165,12 +179,22 @@ class WiFiVoucherController extends \Neos\Flow\Mvc\Controller\ActionController
 
         $mail = new SwiftMailerMessage();
 
+        $sendto = [];
+        foreach ($this->settings['alertEmail']['to'] as $to) {
+            $sendto[$to['email']] = $to['name'];
+        }
+
+        $sendcc = [];
+        foreach ($this->settings['alertEmail']['cc'] as $to) {
+            $sendcc[$to['email']] = $to['name'];
+        }
+
         $mail
-            ->setFrom(array("office@billardcafe.at" => "Billardcafe WiFi Voucher System"))
+            ->setFrom(array($this->settings['alertEmail']['from']['email'] => $this->settings['alertEmail']['from']['name']))
             ->setSubject("WiFi Voucher System | Vorrat an ungenutzten WiFiVouchern im System liegt unter 100")
-            ->setTo(array("webmaster@billardcafe.at" => "Florian Weiss"))
-            ->setCC(array("michael.beneder@billardcafe.at" => "Michael Beneder"))
-            ->setBody("Vorsicht: Der Vorrat an ungenutzten WiFiVouchern beträgt $vouchercount Stück - bitte stellen Sie zeitnah neue Voucher zur Verfügung!", 'text/plain')
+            ->setTo($sendto)
+            ->setCC($sendcc)
+            ->setBody(vsprintf($this->settings['alertEmail']['text'],$vouchercount), 'text/plain')
             ->send();
     }
 }
