@@ -60,7 +60,7 @@ class App extends Component {
                                     groupBy: function(arr){
                                         return arr.reduce(function(outarr, item){
 
-                                            let val = (item.requesttime=="unrequested") ? "unrequested" : new Date(item.requesttime).getUTCMonth() + '/' + new Date(item.requesttime).getUTCFullYear();
+                                            let val = (item.requesttime=="unrequested") ? "unrequested" : (new Date(item.requesttime).getUTCMonth()+1) + '/' + new Date(item.requesttime).getUTCFullYear();
 
                                             if(!(val in outarr)){
                                                 outarr[val] = {
