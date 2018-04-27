@@ -3,7 +3,7 @@
     "type": "neos-package",
     "description": "Add description here",
     "require": {
-        "neos/flow": "~4.0"
+        "neos/flow": "~5.0"
     },
     "autoload": {
         "psr-0": {
