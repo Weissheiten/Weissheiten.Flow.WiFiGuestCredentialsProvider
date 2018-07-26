@@ -5,8 +5,9 @@
     <title>
         <f:render section="Title"/>
     </title>
-    <f:base/>
-
+    <f:for each="{settings.styles}" as="style">
+        <link rel="stylesheet" href="{f:uri.resource(path: style)}"/>
+    </f:for>
 </head>
 <body>
 <f:flashMessages class="flashmessages"/>

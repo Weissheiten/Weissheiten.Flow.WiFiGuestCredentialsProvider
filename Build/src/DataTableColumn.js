@@ -16,8 +16,8 @@ class DataTableColumn extends Component {
 
         return (
             <th className="statistics-table-column">{this.props.datacolumn.header}
-                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, true)} style={buttonStyles}><i className="icon-arrow-up"></i></button>
-                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, false)} style={buttonStyles}><i className="icon-arrow-down"></i></button>
+                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, true)} style={buttonStyles}><i className="fas fa-arrow-up"></i></button>
+                <button onClick={(i, sortasc) => this.props.handlesortclick(this.props.datacolumn, false)} style={buttonStyles}><i className="fas fa-arrow-down"></i></button>
             </th>
         );
     }

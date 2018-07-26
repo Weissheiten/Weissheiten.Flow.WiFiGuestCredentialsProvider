@@ -1,0 +1,17 @@
+tbody.statistics-table-group-collapsed tr {
+  display: none; }
+
+tbody.statistics-table-group-collapsed tr:first-child {
+  display: table-row;
+  background-color: #444;
+  cursor: pointer;
+  cursor: hand; }
+
+tbody.statistics-table-group tr {
+  display: table-row; }
+
+tbody.statistics-table-group tr:first-child {
+  display: table-row;
+  background-color: #444;
+  cursor: pointer;
+  cursor: hand; }

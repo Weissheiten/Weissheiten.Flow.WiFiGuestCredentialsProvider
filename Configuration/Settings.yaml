@@ -22,12 +22,12 @@ Neos:
             label: 'WiFi Voucher'
             controller: Weissheiten\Flow\WiFiGuestCredentialsProvider\Controller\ReportController
             description: 'WiFi Voucher Reports'
-            icon: icon-wifi
+            icon: fas fa-wifi
             privilegeTarget: 'Weissheiten.Flow.WiFiGuestCredentialsProvider:ReportActions'
             additionalResources:
               styleSheets:
                 - 'resource://Weissheiten.Flow.WiFiGuestCredentialsProvider/Public/Css/wifiguestcredentialsprovider.css'
-
+                - 'resource://Neos.Neos/Public/Styles/Neos.css'
 Weissheiten:
   Flow:
     WiFiGuestCredentialsProvider:

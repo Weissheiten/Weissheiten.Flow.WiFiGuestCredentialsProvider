@@ -1,4 +1,2 @@
 .idea/
-Build/**/*
-!/Build/*
-!/Build/src/*
+Build/node_modules
